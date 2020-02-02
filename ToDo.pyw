@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 listFile = "toDoList.txt"
 
@@ -8,13 +9,18 @@ class TaskList:
         self.toDoList = []
         self.changed = False
         self.master = tk.Tk()
-        self.listbox = tk.Listbox(self.master, width=40, height=20)
+        self.tree = ttk.Treeview(self.master)
+        self.tree.column("#0", width=250)
+        self.tree.heading("#0", text="Tasks")
         deleteB = tk.Button(self.master, text="Check Off", command=self.deleteTask)
         addB = tk.Button(self.master, text="Add", command=self.displayAddBox)
+        s = ttk.Style()
+        s.configure('Treeview', rowheight=25)
 
-        self.listbox.pack()
+        self.tree.pack()
         deleteB.pack()
         addB.pack()
+        
 
         for task in initialTasks:
             self.addTask(task)
@@ -49,14 +55,14 @@ class TaskList:
                         break
 
             self.toDoList.insert(i, newTask + "\n")
-            self.listbox.insert(i, newTask)
+            self.tree.insert('', i, text=newTask)
             self.changed = True
 
     def deleteTask(self):
-        highlighted = self.listbox.curselection()
-        if highlighted != ():
-            del self.toDoList[highlighted[0]]
-            self.listbox.delete(highlighted[0])
+        highlighted = self.tree.focus()
+        if highlighted != '':
+            del self.toDoList[self.tree.index(highlighted)]
+            self.tree.delete(highlighted)
             self.changed = True
 
 
