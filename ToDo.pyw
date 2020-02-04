@@ -9,18 +9,19 @@ class TaskList:
         self.toDoList = []
         self.changed = False
         self.master = tk.Tk()
-        self.tree = ttk.Treeview(self.master)
-        self.tree.column("#0", width=250)
-        self.tree.heading("#0", text="Tasks")
-        deleteB = tk.Button(self.master, text="Check Off", command=self.deleteTask)
-        addB = tk.Button(self.master, text="Add", command=self.displayAddBox)
+        self.master.title("To Do")
         s = ttk.Style()
-        s.configure('Treeview', rowheight=25)
 
+        self.tree = ttk.Treeview(self.master, show="tree")
+        self.tree.column("#0", width=300)
+        s.configure('Treeview', rowheight=25)
         self.tree.pack()
+
+        deleteB = tk.Button(self.master, text="Check Off", command=self.deleteTask)
         deleteB.pack()
-        addB.pack()
         
+        addB = tk.Button(self.master, text="Add", command=self.displayAddBox)
+        addB.pack()
 
         for task in initialTasks:
             self.addTask(task)
